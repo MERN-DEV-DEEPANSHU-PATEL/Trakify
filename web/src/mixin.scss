@@ -1,0 +1,80 @@
+//VARIABLES FOR FUTURES CHANGES
+
+//COLORS
+$main-color1: rgb(245, 71, 138);
+$main-color2: rgb(255, 102, 0);
+$text-white: #fff;
+$text-grey-light: #dadada;
+$text-grey-light2: rgb(196, 196, 196) 9;
+$text-grey-dark: rgb(153, 148, 148) 9;
+$text-grey-dark2: rgb(121, 121, 121) 9;
+
+//fonts
+@import url("https://fonts.googleapis.com/css2?family=Fjalla+One&display=swap");
+$normal: sans-serif;
+$heading: "Fjalla One", sans-serif;
+
+//transitionsss
+$smooth: all ease-in-out 0.3s;
+@mixin ssm {
+  @media only screen and (min-width: 480px) {
+    @content;
+  }
+}
+@mixin sm {
+  @media only screen and (min-width: 640px) {
+    @content;
+  }
+}
+
+@mixin md {
+  @media only screen and (min-width: 768px) {
+    @content;
+  }
+}
+
+@mixin lg {
+  @media only screen and (min-width: 1024px) {
+    @content;
+  }
+}
+
+@mixin xl {
+  @media only screen and (min-width: 1280px) {
+    @content;
+  }
+}
+
+@mixin xxl {
+  @media only screen and (min-width: 1536px) {
+    @content;
+  }
+}
+
+@mixin res($var) {
+  @media only screen and (min-width: $var) {
+    @content;
+  }
+}
+
+@mixin flexCenter($gap) {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: $gap;
+}
+
+@mixin flexColCenter($gap) {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: $gap;
+}
+
+@mixin perfectCenter {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}

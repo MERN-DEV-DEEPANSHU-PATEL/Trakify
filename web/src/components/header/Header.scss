@@ -1,0 +1,29 @@
+@import "../../mixin.scss";
+
+header {
+  width: 100%;
+  nav {
+    width: 100%;
+    max-width: 1000px;
+    margin: auto;
+    padding: 1em;
+    display: flex;
+    justify-content: space-between;
+    .logo {
+      font-size: 4em;
+      font-family: $heading;
+    }
+
+    .addBtn {
+      button {
+        border: none;
+        border-radius: 100px;
+        padding: 1em 2em;
+        font-size: 2em;
+        background-color: $main-color1;
+        color: wheat;
+        font-weight: bold;
+      }
+    }
+  }
+}
