@@ -20,29 +20,41 @@ interface props {
 
 const TaskCard = ({ task }: props) => {
   const [showTaskForm, setShowTaskForm] = useState(false);
+  const [showConfirmation, setShowConfirmation] = useState(false); // State for confirmation alert
+
   const dispatch = useDispatch();
+
   const handleDelete = () => {
+    setShowConfirmation(true); // Show confirmation alert
+  };
+
+  const confirmDelete = () => {
     dispatch(deleteTask(task.id));
+    setShowConfirmation(false);
+  };
+
+  const cancelDelete = () => {
+    setShowConfirmation(false);
   };
   let statusColor = "";
   switch (task.status) {
     case "Pending":
-      statusColor = "bg-yellow-500";
+      statusColor = "yellow";
       break;
     case "In Progress":
-      statusColor = "bg-blue-500";
+      statusColor = "blue";
       break;
     case "Completed":
-      statusColor = "bg-green-500";
+      statusColor = "green";
       break;
     case "Deployed":
-      statusColor = "bg-purple-500";
+      statusColor = "purple";
       break;
     case "Deferred":
-      statusColor = "bg-gray-500";
+      statusColor = "gray";
       break;
     default:
-      statusColor = "bg-gray-500";
+      statusColor = "gray";
   }
 
   const getDate = (timeInML: number | undefined) => {
@@ -67,8 +79,39 @@ const TaskCard = ({ task }: props) => {
           setShowTaskForm={setShowTaskForm}
         />
       )}
+      {showTaskForm && (
+        <TaskForm
+          isUpdate={true}
+          oldInputs={task}
+          setShowTaskForm={setShowTaskForm}
+        />
+      )}
+
+      {/* Confirmation alert */}
+      {showConfirmation && (
+        <div className="fixed top-0 left-0 w-full h-full bg-gray-800 bg-opacity-50 flex justify-center items-center z-50">
+          <div className="bg-white p-8 rounded-lg shadow-lg flex flex-col items-center space-y-4">
+            <p className="text-2xl font-bold">Confirm Deletion</p>
+            <p className="text-xl">{`Are you sure you want to delete task "${task.title}"?`}</p>
+            <div className="flex space-x-4">
+              <button
+                onClick={confirmDelete}
+                className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition-colors focus:outline-none focus:ring focus:ring-red-200"
+              >
+                Yes, Delete
+              </button>
+              <button
+                onClick={cancelDelete}
+                className="px-4 py-2 bg-gray-300 text-gray-800 rounded-md hover:bg-gray-400 transition-colors focus:outline-none focus:ring focus:ring-gray-200"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
       <div
-        className="rounded-lg mx-1 lg:mx-auto border bg-card text-card-foreground shadow-sm lg:w-[95%]  basis-[40em] lg:basis-auto flex-shrink-0"
+        className="rounded-lg mx-1 lg:mx-auto border card text-card-foreground shadow-sm lg:w-[95%]  basis-[40em] lg:basis-auto flex-shrink-0"
         data-v0-t="card"
       >
         <div className=" space-y-1.5 p-6 flex  items-center justify-between">
@@ -79,14 +122,14 @@ const TaskCard = ({ task }: props) => {
           <div className="flex items-center gap-2">
             <button
               onClick={() => setShowTaskForm(true)}
-              className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-3xl font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-10 w-10"
+              className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-3xl font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:accent hover:text-accent-foreground h-10 w-10"
             >
               <PencilIcon />
             </button>
             {task.status !== "Completed" && (
               <button
                 onClick={handleDelete}
-                className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-3xl font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-10 w-10"
+                className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-3xl font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:accent hover:text-accent-foreground h-10 w-10"
               >
                 <TrashIcon />
               </button>
@@ -100,19 +143,19 @@ const TaskCard = ({ task }: props) => {
           <div className="grid grid-cols-2 items-center text-xs gap-1">
             <span className="flex items-center gap-1">
               <CalendarIcon />
-              <span className="text-gray-500 dark:text-gray-400 text-2xl">
+              <span className="text-gray dark:text-gray-400 text-2xl">
                 {startDate + " - " + endDate}
               </span>
             </span>
             <span className="flex items-center gap-1">
               <UserIcon />
-              <span className="text-gray-500 dark:text-gray-400 text-2xl">
+              <span className="text-gray dark:text-gray-400 text-2xl">
                 {task.assignee}
               </span>
             </span>
             <span className="flex items-center gap-1">
               <FlagIcon />
-              <span className="text-gray-500 dark:text-gray-400 text-2xl">
+              <span className="text-gray dark:text-gray-400 text-2xl">
                 {task.status}
               </span>
             </span>
@@ -122,6 +165,8 @@ const TaskCard = ({ task }: props) => {
     </>
   );
 };
+
+// SVG ICONS ----------
 
 function CalendarIcon(props: any) {
   return (

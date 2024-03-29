@@ -22,6 +22,7 @@ const initialState: TaskState = {
   tasks: [],
 };
 
+//Task slice to store task and perform CURD operation on it
 export const taskSlice = createSlice({
   name: "task",
   initialState,

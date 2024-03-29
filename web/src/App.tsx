@@ -7,9 +7,11 @@ import Header from "./components/header/Header";
 import { useEffect, useState } from "react";
 
 function App() {
+  //State for toggle The Task form
   const [showTaskForm, setShowTaskForm] = useState(false);
 
   useEffect(() => {
+    // Event listener on refresh state will gone
     const handleBeforeUnload = (event: BeforeUnloadEvent) => {
       event.preventDefault();
       console.log("hello");

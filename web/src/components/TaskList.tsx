@@ -4,8 +4,8 @@ import TaskCard from "./TaskCard";
 import { selectTasks } from "../store/taskSlice";
 
 const TaskList: React.FC = () => {
-  const tasks = useSelector(selectTasks);
-  const [filteredTasks, setFilteredTasks] = useState(tasks);
+  const tasks = useSelector(selectTasks); // get all task from redux
+  const [filteredTasks, setFilteredTasks] = useState(tasks); // state for filter tasks
   const [filterOptions, setFilterOptions] = useState({
     byAssigneeName: "",
     byPriority: "",
@@ -14,18 +14,21 @@ const TaskList: React.FC = () => {
   });
   const [sortBy, setSortBy] = useState("");
 
-  const handleChange = (
-    e:
-      | React.ChangeEvent<HTMLSelectElement>
-      | React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const { name, value } = e.target;
-    if (name === "sortBy") {
-      setSortBy(value);
-    } else {
-      setFilterOptions((prev) => ({ ...prev, [name]: value }));
-    }
-  };
+  const handleChange = useCallback(
+    (
+      e:
+        | React.ChangeEvent<HTMLSelectElement>
+        | React.ChangeEvent<HTMLInputElement>
+    ) => {
+      const { name, value } = e.target;
+      if (name === "sortBy") {
+        setSortBy(value);
+      } else {
+        setFilterOptions((prev) => ({ ...prev, [name]: value }));
+      }
+    },
+    []
+  );
 
   const updateFilters = useCallback(() => {
     const filtered = tasks.filter((task) => {
@@ -71,7 +74,7 @@ const TaskList: React.FC = () => {
     }
   }, [sortBy, filteredTasks]);
 
-  // Group tasks by status
+  // Group tasks by status for sperate column
   const groupedTasks: { [status: string]: JSX.Element[] } = {};
   filteredTasks.forEach((task) => {
     if (!groupedTasks[task.status]) {
@@ -80,6 +83,7 @@ const TaskList: React.FC = () => {
     groupedTasks[task.status].push(<TaskCard key={task.id} task={task} />);
   });
 
+  //for status wise color
   const getColor = (status: string) => {
     switch (status) {
       case "Pending":
